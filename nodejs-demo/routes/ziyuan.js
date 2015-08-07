@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var request = require('request');
+// 抓取资源页面
 var ziyuan = require('../public/js/get_zimuzu_id');
 var cheerio = require('cheerio');
 
