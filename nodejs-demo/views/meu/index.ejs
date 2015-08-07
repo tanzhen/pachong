@@ -1,10 +1,9 @@
 <% include ../header.ejs %>
 <div class="banner clearfix ">
-	<div class="col-md-8 center-block">
+	<div class="center-block tc">
 		<div class="form-group form-inline center">
-		    <label for="exampleInputName2">id:</label>
-		    <input type="text" class="form-control search-text" id="exampleInputName2" placeholder="页面id">
-		    <input type="button" class="btn btn-success" value="确定">
+		    <input type="text" class="form-control search-text" id="text" placeholder="页面id">
+		    <input type="button" class="btn btn-success" id="btn" value="确定">
 		  </div>
 		<div class="form-group form-inline">
 			<label class="radio-inline">
@@ -26,4 +25,50 @@
 	</div>
 </div>
 <div class="box">121</div>
+<script>
+	getHtml();
+	function getHtml () {
+		$('#btn').on('click',function(){
+			var oText = $('#text');
+			var iRadio;
+			var oRadio = $('[name="inlineRadioOptions"]');
+			if(oText.val()===''){
+				alert('请填写页面ID');
+				return;	
+			}
+			oRadio.each(function(index, el) {
+				if($(this).is(':checked')){
+					iRadio = $(this).val();
+				}
+			});
+
+			$.ajax({
+				url:'/zy',
+				type:'get',
+				data:{
+					'id':oText.val(),
+					'geshi':iRadio
+				},
+				success:function(data){
+					var sHtml = '';
+					var sTitle,
+						sLink;
+					for(var i=0;i<data.length;i++){
+						sTitle = '';
+						sLink = '';
+						sTitle = '<h3 class="resous-list-title">'+data[i].title+'</h3>';
+						for(var j=0;j<data[i].links.length;j++){
+							sLink+='<a href="'+data[i].links[j].link_url+'" class="resous-list-urls">'+data[i].links[j].link_name+'</a>';
+						}
+						sHtml+='<li class="resous-list">'+sTitle+sLink+'</li>';
+					}
+					$('.box').html('<ul>'+sHtml+'</ul>');
+				},
+				error:function(){
+					console.log('Error');
+				}
+			});
+		});
+	}
+</script>
 <% include ../footer.ejs %>

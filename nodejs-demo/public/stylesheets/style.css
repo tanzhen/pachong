@@ -1,2 +1,5 @@
 /*.search-text{width: 500px;}*/
-.banner{height: 500px;background: url();}
+.tc{text-align: center;}
+.banner{height: 500px;background-image: url(../images/bg.jpg);background-repeat: no-repeat;background-size: cover;background-position: 50% 0;}
+.banner .form-inline .search-text{width: 550px;}
+.banner .center-block{margin-top: 250px;}
