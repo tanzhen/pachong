@@ -1,26 +1,23 @@
 var express = require('express');
 var router = express.Router();
+var querystring = require('querystring');
 
-var request = require('request');
 // 抓取资源页面
-var ziyuan = require('../public/js/get_zimuzu_id');
-var cheerio = require('cheerio');
-
-// var url ='http://www.zimuzu.tv/resource/list/';
+var ziyuan = require('../public/module/get_zimuzu_id');
 
 var searchInfo;
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-
+	var search = req._parsedUrl.search;
 	var sSeason = req.query.season||'all';
 	var sFormat = req.query.geshi||'all';
-
+	var utfsearch = querystring.escape(req.query.name);
 	var options = {
-		'linkid':req.query.id,
+		'name':utfsearch,
 		'format':sFormat,
-		'season':sSeason
+		'season':sSeason,
+		'search':search
 	};
-	// console.log(ziyuan);
   	ziyuan(options,res);
 });
 
