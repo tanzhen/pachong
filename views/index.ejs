@@ -56,9 +56,11 @@
 			$('.loading-box').show(300);
 			if(!status) return;
 			status = false;
-			$('.box').show().animate({
+			$('.box').animate({
 				top:'100%'
-			}, 400);
+			}, 400,function(){
+				$(this).show();
+			});
 
 			if(oText.val()===''){
 				alert('请填写页面ID');
