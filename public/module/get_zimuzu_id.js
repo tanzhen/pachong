@@ -77,7 +77,7 @@ function getPageHtml (id,call,options) {
 			html+=data;
 		});
 		res.on('end',function(){
-			// console.log(html);
+			console.log(html);
 			var sText = fiterChapters(html,options);
 			call.json(sText);
 			console.log('抓取成功！');
