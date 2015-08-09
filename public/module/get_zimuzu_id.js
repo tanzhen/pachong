@@ -45,11 +45,11 @@ function searchName (options,call) {
 			console.log('搜索页面获取成功！');
 			console.log('获取剧集id..');
 			var $ = cheerio.load(html);
-			$('.search-result>ul li').each(function(){
-				if($(this).find('em').text()==='电视剧'){
-					id = $(this).find('.fl-info').find('a').attr('href').substr(10);
+			var list = $('.search-result>ul li').eq(0);
+				if(list.find('em').text()==='电视剧'){
+					id = list.find('.fl-info').find('a').attr('href').substr(10);
 				}
-			});
+			
 			console.log(id);
 			if(id!==''){
 				console.log('获取剧集id成功！');
@@ -69,7 +69,7 @@ function getPageHtml (id,call,options) {
 		host:'www.zimuzu.tv',
 		path:'/resource/list/'+id,
 		headers:{
-			'Cookie':'last_item:11003=%E7%8A%AF%E7%BD%AA%E5%BF%83%E7%90%86.Criminal.Minds.S10E08.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mkv; last_item_date:11003=1437661509; PHPSESSID=dno9ulnfpnike8oo7od959u904; mykeywords=a%3A3%3A%7Bi%3A0%3Bs%3A15%3A%22%E6%9D%83%E5%8A%9B%E7%9A%84%E6%B8%B8%E6%88%8F%22%3Bi%3A1%3Bs%3A6%3A%22%E7%A1%85%E8%B0%B7%22%3Bi%3A2%3Bs%3A12%3A%22%E7%8A%AF%E7%BD%AA%E5%BF%83%E7%90%86%22%3B%7D; ctrip=ctrip%2F1438954148; GINFO=uid%3D3644573%26nickname%3Dminika%26group_id%3D0%26avatar_t%3D%26main_group_id%3D0%26common_group_id%3D53; GKEY=c0a2bd67586e77f0ef78e69535698d37; cps=yhd%2F1438953976%3Bsfbest%2F1438953985%3Bnuomi%2F1438953991%3Bdp%2F1438954204; CNZZDATA1254180690=593096919-1437655573-%7C1438950005'
+			'Cookie':'last_item:11003=%E7%8A%AF%E7%BD%AA%E5%BF%83%E7%90%86.Criminal.Minds.S10E08.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mkv; last_item_date:11003=1437661509; last_item_date:32102=1438954481; PHPSESSID=bq44q79eoldvm2b4b3o35bh8p0; mykeywords=a%3A6%3A%7Bi%3A0%3Bs%3A9%3A%22%E7%BA%B8%E7%89%8C%E5%B1%8B%22%3Bi%3A1%3Bs%3A15%3A%22%E6%9D%83%E5%8A%9B%E7%9A%84%E6%B8%B8%E6%88%8F%22%3Bi%3A2%3Bs%3A6%3A%22%E8%A1%80%E6%97%8F%22%3Bi%3A3%3Bs%3A15%3A%22%E7%94%9F%E6%B4%BB%E5%A4%A7%E7%88%86%E7%82%B8%22%3Bi%3A4%3Bs%3A6%3A%22%E7%A1%85%E8%B0%B7%22%3Bi%3A5%3Bs%3A12%3A%22%E7%8A%AF%E7%BD%AA%E5%BF%83%E7%90%86%22%3B%7D; ctrip=ctrip%2F1439097605; cps=yhd%2F1439097568%3Bsfbest%2F1439097585%3Bnuomi%2F1439097592%3Bdp%2F1439097605; GINFO=uid%3D3644573%26nickname%3Dminika%26group_id%3D0%26avatar_t%3D%26main_group_id%3D0%26common_group_id%3D53; GKEY=e1d9121374c3026a497a9dda3671ef49; CNZZDATA1254180690=593096919-1437655573-%7C1439092486'
 		}
 	},function(res){
 		var html = '';
@@ -77,6 +77,7 @@ function getPageHtml (id,call,options) {
 			html+=data;
 		});
 		res.on('end',function(){
+			// console.log(html);
 			var sText = fiterChapters(html,options);
 			call.json(sText);
 			console.log('抓取成功！');
@@ -108,9 +109,9 @@ function fiterChapters(html,options){
 							return;
 						}else{
 							if(_fr_a.attr('mamvboau')){
-								sLink = _fr_a.attr('mamvboau');
+								sLink = querystring.unescape(_fr_a.attr('mamvboau'));
 							}else{
-								sLink = _fr_a.attr('href');
+								sLink = querystring.unescape(_fr_a.attr('href'));
 							}
 						}
 						var sj = {

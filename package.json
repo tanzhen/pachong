@@ -12,9 +12,12 @@
     "ejs": "~2.3.2",
     "express": "~4.13.0",
     "morgan": "~1.6.1",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "cheerio":"~2.11.3"
   },
-  "engines": {"node": "0.12.x"},
+  "engines": {
+    "node": "0.12.x"
+  },
   "description": "zimuzu pachong",
   "main": "app.js",
   "devDependencies": {},
