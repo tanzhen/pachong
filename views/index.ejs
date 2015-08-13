@@ -1,11 +1,15 @@
 <% include header.ejs %>
 <div class="banner clearfix ">
-	<div class="center-block tc">
-		<div class="form-group form-inline center">
-		    <input type="text" class="form-control search-text" id="text" placeholder="美剧名">
-		    <input type="button" class="btn btn btn-primary" id="btn" value="确定">
+	<div class="container">
+		<div class="form-group clearfix">
+			<div class="col-md-offset-2 col-sm-offset-1 col-md-7 col-sm-8 col-xs-12">
+			    <input type="text" class="form-control search-text" id="text" placeholder="美剧名">
+		    </div>
+		    <div class="col-md-1 col-sm-2 col-xs-12 btn-submit">
+		    	<input type="button" class="btn btn-primary btn-block" id="btn" value="确定">
+		    </div>
 		  </div>
-		<div class="form-group form-inline">
+		<div class="form-group form-inline hidden-xs tc" id="radioList">
 			<label class="radio-inline">
 			  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="HR-HDTV" checked="checked">HR-HDTV
 			</label>
@@ -25,89 +29,129 @@
 			  <input type="radio" name="inlineRadioOptions" id="inlineRadio6" value="MP4"> MP4
 			</label>
 		</div>
+		<div class="visible-xs col-md-12" id="selectList">
+			<select class="form-control" value="">
+			  <option value="HR-HDTV">HR-HDTV</option>
+			  <option value="720P">720P</option>
+			  <option value="1080P">1080P</option>
+			  <option value="BD-1080P">BD-1080P</option>
+			  <option value="BD-720P">BD-720P</option>
+			  <option value="MP4">MP4</option>
+			</select>
+		</div>
 	</div>
 </div>
 <div class="loading-box"><div class="loading"></div></div>
 <div class="box container">
 </div>
 <script>
-	getHtml();
-	function getHtml () {
-		var status = true;
-		$('#btn').on('click',function(){
-			var oText = $('#text');
-			var iRadio;
-			var oRadio = $('[name="inlineRadioOptions"]');
+	// getHtml();
+	var status = true;
+	$('#btn').on('click',function(){
+		var oText = $('#text');
+		var iRadio;
+		var oRadio = $('[name="inlineRadioOptions"]');
 
-			$('.loading-box').show(300);
-			if(!status) return;
-			status = false;
-			$('.box').animate({
-				top:'100%'
-			}, 400,function(){
-				$(this).hide();
-			});
+		if(!status) return;
+		status = false;
+		$('.box').animate({
+			top:'100%'
+		}, 400,function(){
+			$(this).hide();
+		});
 
-			if(oText.val()===''){
-				alert('请填写页面ID');
-				return;
-			}
+		if(oText.val()===''){
+			alert('请填写美剧名');
+			return false;
+		}
+		$('.loading-box').show(300);
+		if($('#radioList').css('display')=='none'){
+			iRadio = $('#selectList select').val();
+		}else{
 			oRadio.each(function(index, el) {
 				if($(this).is(':checked')){
 					iRadio = $(this).val();
 				}
 			});
-
-			$.ajax({
-				url:'/zy',
-				type:'get',
-				data:{
-					'name':oText.val(),
-					'geshi':iRadio
-				},
-				success:function(data){
-					var sHtml = '';
-					var sTitle,
-						sLink,
-						sSeason;
-					status = true;
-					$('.loading-box').hide(300);
-					for(var i=0;i<data.length;i++){
-						sTitle = '';
-						sLink = '';
-						sTitle = '<h4 class="resous-list-title">'+data[i].title+'</h4>';
-						if(data[i].season=='103'){
-							sSeason = '<span>周边</span>';
-						}else{
-							sSeason = '<span>第'+data[i].season+'季</span>';
-						}
-						for(var j=0;j<data[i].links.length;j++){
-							sLink+='<a href="'+data[i].links[j].link_url+'" class="resous-list-urls btn btn btn-primary">'+data[i].links[j].link_name+'</a>';
-						}
-						sHtml+='<li class="resous-list">'+sTitle+sSeason+'<div class="link-list">'+sLink+'</div></li>';
+		}
+		console.log(iRadio);
+		// return;
+		$.ajax({
+			url:'/zy',
+			type:'get',
+			data:{
+				'name':oText.val(),
+				'geshi':iRadio
+			},
+			success:function(data){
+				var sHtml = '';
+				var sTitle,
+					sLink,
+					sSeason;
+				status = true;
+				$('.loading-box').hide(300);
+				for(var i=0;i<data.length;i++){
+					sTitle = '';
+					sLink = '';
+					sTitle = '<h4 class="resous-list-title">'+data[i].title+'</h4>';
+					if(data[i].season=='103'){
+						sSeason = '<span>周边</span>';
+					}else{
+						sSeason = '<span>第'+data[i].season+'季</span>';
 					}
-					$('.box').html('<ul class="list-unstyled">'+sHtml+'</ul>');
-					$('.box').show().animate({
-						top:'70%'
-					}, 400);
-					
-				},
-				error:function(){
-					status = true;
-					console.log('Error');
-					$('.loading-box').hide(300);
+					for(var j=0;j<data[i].links.length;j++){
+						sLink+='<a href="'+data[i].links[j].link_url+'" class="resous-list-urls btn btn btn-primary">'+data[i].links[j].link_name+'</a>';
+					}
+					sHtml+='<li class="resous-list">'+sTitle+sSeason+'<div class="link-list">'+sLink+'</div></li>';
 				}
-			});
+				$('.box').html('<ul class="list-unstyled">'+sHtml+'</ul>');
+				$('.box').show().animate({
+					top:'70%'
+				}, 400);
+				// clickFun();
+			},
+			error:function(){
+				status = true;
+				console.log('Error');
+				$('.loading-box').hide(300);
+			}
 		});
+	});
+
+	function showMsg (msg) {
+		var div = $('<div class="pop-url"></div>');
+		var domX = $('<div class="x"></div>');
+		
+		$('.pop-url').remove();
+		div.html(msg);
+		$('body').append(div);
+		return false;
 	}
 
-	function clickFun(){
-		$('.box a').each(function  () {
-			$(this).on('click',function(){
-				alert($(this).attr('href'));
-				return false;
-			});
-		});
-	}
+	// function clickFun(){
+	// 	$('.box a').each(function  () {
+	// 		$(this).on('click',function(){
+	// 			$('.pop-url').remove();
+	// 			var div = $('<div></div>');
+	// 			div.addClass('pop-url');
+	// 			div.css({
+	// 				'position':'fixed',
+	// 				'width':'80%',
+	// 				'left':'10%',
+	// 				'top':'10%',
+	// 				'background':'rgba(0,0,0,.5)',
+	// 				'color':'#fff',
+	// 				'padding':'3%',
+	// 				'font-size':'1.4em',
+	// 				'word-break':'break-all',
+	// 				'z-index':'999999',
+	// 				'border-radius':'3px'
+	// 			});
+	// 			div.html($(this).attr('href'));
+	// 			$('body').append(div);
+	// 			return false;
+	// 		});
+	// 	});
+	// }
 </script>
 <% include footer.ejs %>

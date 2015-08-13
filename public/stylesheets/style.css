@@ -2,14 +2,27 @@
 body,html{background: #F5F5F5;/* width: 100%; *//* height: 100%; */}
 .tc{text-align: center;}
 .banner{height: 100%;background-image: url(../images/bg.jpg);background-repeat: no-repeat;background-size: cover;background-position: 50% 0;position: absolute;width: 100%;height: 100%;}
-.banner .form-inline .search-text{width: 550px;}
-.banner .center-block{top: 30%;width: 800px;position: relative;padding: 40px 20px 20px;}
+/*.banner .form-inline .search-text{width: 550px;}*/
+.banner>div{margin-top: 18%;}
 
 .box{position: absolute;z-index: 9;top: 100%;left: 0;right: 0;display: none;}
 .box .list-unstyled li{background: #fff;padding: 10px 20px 20px;margin-top: 20px;box-shadow: 1px 1px 3px #BFBFBF;position: relative;}
 .box .list-unstyled li span{position: absolute;padding: 4px 10px; background: #DEDEDE;top: 0;right: 0;}
 .list-unstyled .link-list a{margin-left: 5px;}
 .list-unstyled .link-list a:first-of-type{margin-left: 0;}
+
+/* 小屏幕（平板，大于等于 768px） */
+@media (max-width: 767px) {
+	.btn-submit{margin-top: 15px;}
+	.banner>div{margin-top: 30%;}
+}
+
+/* 中等屏幕（桌面显示器，大于等于 992px） */
+/*@media (min-width: @screen-md-min) { ... }*/
+
+/* 大屏幕（大桌面显示器，大于等于 1200px） */
+/*@media (min-width: @screen-lg-min) { ... }*/
+
 
 
 .loading-box{width: 40px;height: 30px;top: 50%;left: 50%;margin-left: -15px;z-index: 99;position: absolute;display: none;}
@@ -22,6 +35,14 @@ body,html{background: #F5F5F5;/* width: 100%; *//* height: 100%; */}
 .loading:after{-webkit-animation: loading .6s .6s alternate infinite ease-in-out;-o-animation: loading .6s .6s alternate infinite ease-in-out;animation: loading ease .6s .6s alternate infinite ease-in-out;}
 
 @-webkit-keyframes loading{
+	from{transform: scaleY(.3)}
+	to{transform: scaleY(1)}
+}
+@-moz-keyframes loading{
+	from{transform: scaleY(.3)}
+	to{transform: scaleY(1)}
+}
+@keyframes loading{
 	from{transform: scaleY(.3)}
 	to{transform: scaleY(1)}
 }
