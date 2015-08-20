@@ -5,6 +5,16 @@
 			<div class="col-md-offset-2 col-sm-offset-1 col-md-7 col-sm-8 col-xs-12">
 			    <input type="text" class="form-control search-text" id="text" placeholder="美剧名">
 		    </div>
+		    <div class="visible-xs col-md-12 col-xs-12" id="selectList">
+		    	<select class="form-control" value="">
+		    	  <option value="HR-HDTV">HR-HDTV</option>
+		    	  <option value="720P">720P</option>
+		    	  <option value="1080P">1080P</option>
+		    	  <option value="BD-1080P">BD-1080P</option>
+		    	  <option value="BD-720P">BD-720P</option>
+		    	  <option value="MP4">MP4</option>
+		    	</select>
+		    </div>
 		    <div class="col-md-1 col-sm-2 col-xs-12 btn-submit">
 		    	<input type="button" class="btn btn-primary btn-block" id="btn" value="确定">
 		    </div>
@@ -29,23 +39,16 @@
 			  <input type="radio" name="inlineRadioOptions" id="inlineRadio6" value="MP4"> MP4
 			</label>
 		</div>
-		<div class="visible-xs col-md-12" id="selectList">
-			<select class="form-control" value="">
-			  <option value="HR-HDTV">HR-HDTV</option>
-			  <option value="720P">720P</option>
-			  <option value="1080P">1080P</option>
-			  <option value="BD-1080P">BD-1080P</option>
-			  <option value="BD-720P">BD-720P</option>
-			  <option value="MP4">MP4</option>
-			</select>
-		</div>
 	</div>
+</div>
+<div class="pop-msg">
+	<div class="x"></div>
+	<div class="text"></div>
 </div>
 <div class="loading-box"><div class="loading"></div></div>
 <div class="box container">
 </div>
 <script>
-	// getHtml();
 	var status = true;
 	$('#btn').on('click',function(){
 		var oText = $('#text');
@@ -74,8 +77,6 @@
 				}
 			});
 		}
-		console.log(iRadio);
-		// return;
 		$.ajax({
 			url:'/zy',
 			type:'get',
@@ -108,7 +109,10 @@
 				$('.box').show().animate({
 					top:'70%'
 				}, 400);
-				// clickFun();
+				$('a').on('click',function(){
+					showMsg($(this).attr('href'));
+					return false;
+				});
 			},
 			error:function(){
 				status = true;
@@ -119,39 +123,13 @@
 	});
 
 	function showMsg (msg) {
-		var div = $('<div class="pop-url"></div>');
-		var domX = $('<div class="x"></div>');
-		
-		$('.pop-url').remove();
-		div.html(msg);
-		$('body').append(div);
+		var oPop = $('.pop-msg');
+		oPop.find('.text').html(msg);
+		oPop.addClass('pop-anima');
 		return false;
 	}
-
-	// function clickFun(){
-	// 	$('.box a').each(function  () {
-	// 		$(this).on('click',function(){
-	// 			$('.pop-url').remove();
-	// 			var div = $('<div></div>');
-	// 			div.addClass('pop-url');
-	// 			div.css({
-	// 				'position':'fixed',
-	// 				'width':'80%',
-	// 				'left':'10%',
-	// 				'top':'10%',
-	// 				'background':'rgba(0,0,0,.5)',
-	// 				'color':'#fff',
-	// 				'padding':'3%',
-	// 				'font-size':'1.4em',
-	// 				'word-break':'break-all',
-	// 				'z-index':'999999',
-	// 				'border-radius':'3px'
-	// 			});
-	// 			div.html($(this).attr('href'));
-	// 			$('body').append(div);
-	// 			return false;
-	// 		});
-	// 	});
-	// }
+	$('.x').on('click',function(){
+		$('.pop-msg').removeClass('pop-anima');
+	});
 </script>
 <% include footer.ejs %>
