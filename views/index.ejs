@@ -50,77 +50,84 @@
 </div>
 <script>
 	var status = true;
-	$('#btn').on('click',function(){
-		var oText = $('#text');
-		var iRadio;
-		var oRadio = $('[name="inlineRadioOptions"]');
-
-		if(!status) return;
-		status = false;
-		$('.box').animate({
-			top:'100%'
-		}, 400,function(){
-			$(this).hide();
-		});
-
-		if(oText.val()===''){
-			alert('请填写美剧名');
-			return false;
+	$('#btn').on('click',searchSubmit);
+	//回车键点击事件
+	$(document).keydown(function(event){
+		if(event.keyCode==13){
+		  searchSubmit();
 		}
-		$('.loading-box').show(300);
-		if($('#radioList').css('display')=='none'){
-			iRadio = $('#selectList select').val();
-		}else{
-			oRadio.each(function(index, el) {
-				if($(this).is(':checked')){
-					iRadio = $(this).val();
+	});
+	function searchSubmit(){
+			var oText = $('#text');
+			var iRadio;
+			var oRadio = $('[name="inlineRadioOptions"]');
+
+			if(!status) return;
+			status = false;
+			$('.box').animate({
+				top:'100%'
+			}, 400,function(){
+				$(this).hide();
+			});
+
+			if(oText.val()===''){
+				alert('请填写美剧名');
+				return false;
+			}
+			$('.loading-box').show(300);
+			if($('#radioList').css('display')=='none'){
+				iRadio = $('#selectList select').val();
+			}else{
+				oRadio.each(function(index, el) {
+					if($(this).is(':checked')){
+						iRadio = $(this).val();
+					}
+				});
+			}
+			$.ajax({
+				url:'/zy',
+				type:'get',
+				data:{
+					'name':oText.val(),
+					'geshi':iRadio
+				},
+				success:function(data){
+					var sHtml = '';
+					var sTitle,
+						sLink,
+						sSeason;
+					status = true;
+					$('.loading-box').hide(300);
+					for(var i=0;i<data.length;i++){
+						sTitle = '';
+						sLink = '';
+						sTitle = '<h4 class="resous-list-title">'+data[i].title+'</h4>';
+						if(data[i].season=='103'){
+							sSeason = '<span>周边</span>';
+						}else{
+							sSeason = '<span>第'+data[i].season+'季</span>';
+						}
+						for(var j=0;j<data[i]['links'].length;j++){
+							sLink+='<a href="'+data[i].links[j].link_url+'" class="resous-list-urls btn btn btn-primary">'+data[i].links[j].link_name+'</a>';
+						}
+						sHtml+='<li class="resous-list">'+sTitle+sSeason+'<div class="link-list">'+sLink+'</div></li>';
+					}
+					$('.box').html('<ul class="list-unstyled">'+sHtml+'</ul>');
+					$('.box').show().animate({
+						top:'70%'
+					}, 400);
+					$('a').on('click',function(){
+						showMsg($(this).attr('href'));
+						return false;
+					});
+				},
+				error:function(){
+					status = true;
+					console.log('Error');
+					$('.loading-box').hide(300);
 				}
 			});
 		}
-		$.ajax({
-			url:'/zy',
-			type:'get',
-			data:{
-				'name':oText.val(),
-				'geshi':iRadio
-			},
-			success:function(data){
-				var sHtml = '';
-				var sTitle,
-					sLink,
-					sSeason;
-				status = true;
-				$('.loading-box').hide(300);
-				for(var i=0;i<data.length;i++){
-					sTitle = '';
-					sLink = '';
-					sTitle = '<h4 class="resous-list-title">'+data[i].title+'</h4>';
-					if(data[i].season=='103'){
-						sSeason = '<span>周边</span>';
-					}else{
-						sSeason = '<span>第'+data[i].season+'季</span>';
-					}
-					for(var j=0;j<data[i].links.length;j++){
-						sLink+='<a href="'+data[i].links[j].link_url+'" class="resous-list-urls btn btn btn-primary">'+data[i].links[j].link_name+'</a>';
-					}
-					sHtml+='<li class="resous-list">'+sTitle+sSeason+'<div class="link-list">'+sLink+'</div></li>';
-				}
-				$('.box').html('<ul class="list-unstyled">'+sHtml+'</ul>');
-				$('.box').show().animate({
-					top:'70%'
-				}, 400);
-				$('a').on('click',function(){
-					showMsg($(this).attr('href'));
-					return false;
-				});
-			},
-			error:function(){
-				status = true;
-				console.log('Error');
-				$('.loading-box').hide(300);
-			}
-		});
-	});
 
 	function showMsg (msg) {
 		var oPop = $('.pop-msg');
