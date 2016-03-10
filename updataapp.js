@@ -4,7 +4,7 @@ var querystring = require('querystring');
 var url = require('url');
 
 var index = 1;
-var versionCode = 221;
+var versionCode = 277;
 var maxVersionCode = 278;
 
 var appcanInfo = {
@@ -56,7 +56,7 @@ var appcanInfo = {
 		'version_number_3':'0291',
 		'version_des':versionCode,
 	},
-	userCookie:'appcan_uuid=5b6e95c5-90b9-678a-fbb7-de930fe71a09; no_ts=1; PHPSESSID=ST-60355-gFEck9fHcn9dan2RySRT-newssoappcancn; Hm_lvt_d1cb55eae9757438f24e73fdcedc27c5=1450415515; Hm_lpvt_d1cb55eae9757438f24e73fdcedc27c5=1450434554; Hm_lvt_d2f8cf438a1c60b4c14e6983620b37ae=1450415515; Hm_lpvt_d2f8cf438a1c60b4c14e6983620b37ae=1450434554; Hm_lvt_e4d658be0097faa61e8ec41cf5405f2d=1450415515; Hm_lpvt_e4d658be0097faa61e8ec41cf5405f2d=1450434554; CNZZDATA3774146=cnzz_eid%3D1450023404-1450411005-http%253A%252F%252Fwww.appcan.cn%252F%26ntime%3D1450432618'
+	userCookie:'appcan_uuid=5b6e95c5-90b9-678a-fbb7-de930fe71a09; no_ts=1; PHPSESSID=ST-9822-uGdGAoUIb03pNW1EUPva-newssoappcancn; CNZZDATA3774146=cnzz_eid%3D1450023404-1450411005-http%253A%252F%252Fwww.appcan.cn%252F%26ntime%3D1450657668; Hm_lvt_d2f8cf438a1c60b4c14e6983620b37ae=1450415515,1450662784; Hm_lpvt_d2f8cf438a1c60b4c14e6983620b37ae=1450663002; Hm_lvt_e4d658be0097faa61e8ec41cf5405f2d=1450415515,1450662784; Hm_lpvt_e4d658be0097faa61e8ec41cf5405f2d=1450663002; Hm_lvt_d1cb55eae9757438f24e73fdcedc27c5=1450415515,1450662784; Hm_lpvt_d1cb55eae9757438f24e73fdcedc27c5=1450663002'
 };
 function appcanGet (url,callfn) {
 	http.get(url,function(res){

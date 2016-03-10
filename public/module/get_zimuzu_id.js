@@ -48,7 +48,7 @@ function getPageHtml (id,call,options) {
 		host:'www.zimuzu.tv',
 		path:'/resource/list/'+id,
 		headers:{
-			'Cookie':'last_item:11003=%E7%8A%AF%E7%BD%AA%E5%BF%83%E7%90%86.Criminal.Minds.S10E08.%E4%B8%AD%E8%8B%B1%E5%AD%97%E5%B9%95.WEB-HR.AC3.1024X576.x264.mkv; last_item_date:11003=1437661509; last_item_date:32102=1438954481; PHPSESSID=bq44q79eoldvm2b4b3o35bh8p0; mykeywords=a%3A6%3A%7Bi%3A0%3Bs%3A9%3A%22%E7%BA%B8%E7%89%8C%E5%B1%8B%22%3Bi%3A1%3Bs%3A15%3A%22%E6%9D%83%E5%8A%9B%E7%9A%84%E6%B8%B8%E6%88%8F%22%3Bi%3A2%3Bs%3A6%3A%22%E8%A1%80%E6%97%8F%22%3Bi%3A3%3Bs%3A15%3A%22%E7%94%9F%E6%B4%BB%E5%A4%A7%E7%88%86%E7%82%B8%22%3Bi%3A4%3Bs%3A6%3A%22%E7%A1%85%E8%B0%B7%22%3Bi%3A5%3Bs%3A12%3A%22%E7%8A%AF%E7%BD%AA%E5%BF%83%E7%90%86%22%3B%7D; ctrip=ctrip%2F1439097605; cps=yhd%2F1439097568%3Bsfbest%2F1439097585%3Bnuomi%2F1439097592%3Bdp%2F1439097605; GINFO=uid%3D3644573%26nickname%3Dminika%26group_id%3D0%26avatar_t%3D%26main_group_id%3D0%26common_group_id%3D53; GKEY=e1d9121374c3026a497a9dda3671ef49; CNZZDATA1254180690=593096919-1437655573-%7C1439092486'
+			'Cookie':'lctrip=ctrip%2F1457314265; GINFO=uid%3D3644573%26nickname%3Dminika%26group_id%3D0%26avatar_t%3D%26main_group_id%3D0%26common_group_id%3D54; GKEY=c9071e910fa0197e7b72bb6be1cd72e9; mykeywords=a%3A2%3A%7Bi%3A0%3Bs%3A12%3A%22%E8%A1%8C%E5%B0%B8%E8%B5%B0%E8%82%89%22%3Bi%3A1%3Bs%3A9%3A%22%E7%BA%B8%E7%89%8C%E5%B1%8B%22%3B%7D; PHPSESSID=obu8gdv4dpjm6ouhuolq0c97s1; zmz_rich=2; cps=yhd%2F1457599892%3Bsuning%2F1457599900%3Btujia%2F1457421512%3Bwomai%2F1457314292%3Bnuomi%2F1457314306; CNZZDATA1254180690=1256191634-1453363517-%7C1457594756'
 		}
 	},function(res){
 		var html = '';
@@ -64,6 +64,26 @@ function getPageHtml (id,call,options) {
 	req.end();
 }
 
+function returnSourcesJson(html,options) {
+	var $ = cheerio.load(html);
+	var sArr = [];
+	var mediaBox = $('.media-box');
+	var mediaList = mediaBox.find('.media-list');
+}
+
+
+function reSeason(arr) {
+	var res = [];
+	var json = {};
+	for(var i = 0; i < arr.length; i++){
+		if(!json[arr[i]]){
+			res.push(arr[i]);
+			json[arr[i]] = 1;
+		}
+	}
+	return res;
+}
+
 
 function fiterChapters(html,options){
 	var $ = cheerio.load(html);
@@ -72,7 +92,10 @@ function fiterChapters(html,options){
 	var mediaList = mediaBox.find('.media-list');
 	mediaList.each(function(index){
 		var _mediaList = $(this);
+		var arrseason = [];
+		//判断格式
 		if(_mediaList.find('h2').text()==options.format||options.format=='all'){
+			//遍历资源
 			_mediaList.find('li').each(function(){
 				var _mediaList_ul = $(this);
 				var title = querystring.unescape(_mediaList_ul.find('.fl a').text());
@@ -80,7 +103,12 @@ function fiterChapters(html,options){
 				var arrLink = [];
 				var ulj;
 				var sLink;
+				//判断season
 				if(_mediaList_ul.attr('season')==options.season||options.season=='all'){
+					//遍历链接
+					if(options.season=='all'){
+						arrseason.push(_mediaList_ul.attr('season'));
+					}
 					_mediaList_ul.find('.fr a').each(function(){
 						var _fr_a = $(this);
 						var sName = _fr_a.text();
@@ -100,13 +128,19 @@ function fiterChapters(html,options){
 						arrLink.push(sj);
 					});
 					ulj = {
+						season:season,
+						sources:[],
 						title:title,
 						links:arrLink,
-						season:season
 					};
 				sArr.push(ulj);
 				}
 			});
+			if(options.season == 'all'){
+				var arrAllSeason = reSeason(arrseason);
+				console.log('allSeason:'+arrAllSeason);
+
+			}
 		}
 	});
 	return sArr;
