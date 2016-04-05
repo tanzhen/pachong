@@ -26,9 +26,9 @@ body,html{background: #F5F5F5;/* width: 100%; *//* height: 100%; */}
 #selectList{margin-top: 10px;}
 .resous-list h4{word-break: break-all;}
 .pop-msg{position: fixed;width: 80%;left: 10%;top: -100%;color: #fff;z-index: 9999;background:rgba(0,0,0,.5);padding: 15px; box-sizing:border-box;-webkit-box-sizing:border-box;font-size: 16px;-webkit-transition: all .3s ease-in-out;-ms-transition: all .3s ease-in-out;-o-transition: all .3s ease-in-out;transition: all .3s ease-in-out;}
-.pop-msg .x{width: 20px;height: 20px;border-radius: 50%;position: absolute;right: 0;top: 0;cursor: pointer;}
-.pop-msg .x:after{width: 15px;height: 1px;position: absolute;background: #fff;visibility: visible;content: '';-webkit-transform: rotate(45deg);-ms-transform: rotate(45deg);-o-transform: rotate(45deg);transform: rotate(45deg);left: 3px;top: 9px;}
-.pop-msg .x:before{width: 15px;height: 1px;position: absolute;background: #fff;visibility: visible;content: '';-webkit-transform: rotate(-45deg);-ms-transform: rotate(-45deg);-o-transform: rotate(-45deg);transform: rotate(-45deg);left: 3px;top: 10px;}
+.pop-msg .x{width: 20px;height: 20px;position: absolute;right: -20px;top: -20px;cursor: pointer;background: #fff;}
+.pop-msg .x:after{width: 16px;height: 1px;position: absolute;background: #000;visibility: visible;content: '';-webkit-transform: rotate(45deg);-ms-transform: rotate(45deg);-o-transform: rotate(45deg);transform: rotate(45deg);left: 2px;top: 10px;}
+.pop-msg .x:before{width: 16px;height: 1px;position: absolute;background: #000;visibility: visible;content: '';-webkit-transform: rotate(-45deg);-ms-transform: rotate(-45deg);-o-transform: rotate(-45deg);transform: rotate(-45deg);left: 2px;top: 10px;}
 .pop-msg .text{word-break: break-all;}
 .pop-anima{top: 10%;}
 

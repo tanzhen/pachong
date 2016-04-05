@@ -48,7 +48,7 @@ function getPageHtml (id,call,options) {
 		host:'www.zimuzu.tv',
 		path:'/resource/list/'+id,
 		headers:{
-			'Cookie':'lctrip=ctrip%2F1457314265; GINFO=uid%3D3644573%26nickname%3Dminika%26group_id%3D0%26avatar_t%3D%26main_group_id%3D0%26common_group_id%3D54; GKEY=c9071e910fa0197e7b72bb6be1cd72e9; mykeywords=a%3A2%3A%7Bi%3A0%3Bs%3A12%3A%22%E8%A1%8C%E5%B0%B8%E8%B5%B0%E8%82%89%22%3Bi%3A1%3Bs%3A9%3A%22%E7%BA%B8%E7%89%8C%E5%B1%8B%22%3B%7D; PHPSESSID=obu8gdv4dpjm6ouhuolq0c97s1; zmz_rich=2; cps=yhd%2F1457599892%3Bsuning%2F1457599900%3Btujia%2F1457421512%3Bwomai%2F1457314292%3Bnuomi%2F1457314306; CNZZDATA1254180690=1256191634-1453363517-%7C1457594756'
+			'Cookie':'PHPSESSID=hamvtktkfn1nq2rip4duommde1; GINFO=uid%3D3644573%26nickname%3Dminika%26group_id%3D0%26avatar_t%3D%26main_group_id%3D0%26common_group_id%3D54; GKEY=825a6573c0286a973d30efc81b37b9b9;'
 		}
 	},function(res){
 		var html = '';
@@ -64,6 +64,10 @@ function getPageHtml (id,call,options) {
 	req.end();
 }
 
+// uid%3D3644573%26nickname%3Dminika%26group_id%3D0%26avatar_t%3D%26main_group_id%3D0%26common_group_id%3D54
+// 
+// a%3A2%3A%7Bi%3A0%3Bs%3A12%3A%22%E8%A1%8C%E5%B0%B8%E8%B5%B0%E8%82%89%22%3Bi%3A1%3Bs%3A9%3A%22%E7%BA%B8%E7%89%8C%E5%B1%8B%22%3B%7D
+// cda81fa15e65dfa5e109c1bc8f1de6c6
 function returnSourcesJson(html,options) {
 	var $ = cheerio.load(html);
 	var sArr = [];
